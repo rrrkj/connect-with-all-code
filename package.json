@@ -1,0 +1,20 @@
+{
+  "name": "connect-with-all-code",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Connect to all your coding agents from WhatsApp",
+  "workspaces": [
+    "shared",
+    "gateway",
+    "connector"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev:gateway": "npm run dev -w gateway",
+    "dev:connector": "npm run dev -w connector",
+    "test": "npm test --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

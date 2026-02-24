@@ -1,0 +1,30 @@
+# ConnectWithAllCode — Connector Agent Config
+# Copy this file to ~/.cwac/config.yaml and customize.
+
+agents:
+  claude:
+    enabled: true
+    command: "claude"
+    api_key_env: "ANTHROPIC_API_KEY"
+
+  antigravity:
+    enabled: false
+    integration: "mcp"
+    mcp_server: "localhost:3100"
+
+  cursor:
+    enabled: false
+    integration: "cloud-api"
+    api_key_env: "CURSOR_API_KEY"
+
+  windsurf:
+    enabled: false
+    integration: "cli"
+    command: "windsurf"
+
+defaults:
+  agent: "claude"
+  workspace: "~/projects"
+
+gateway:
+  url: "ws://localhost:3000/ws"
