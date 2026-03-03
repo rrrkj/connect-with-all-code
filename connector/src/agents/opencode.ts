@@ -142,7 +142,12 @@ export class OpencodeRunner implements AgentRunner {
             const [cmd, ...cmdArgs] = args;
             const proc = spawn(cmd, cmdArgs, {
                 cwd: cwd || undefined,
-                env: { ...process.env },
+                env: {
+                    ...process.env,
+                    // Use dedicated bot home so bot tasks get their own SQLite DB,
+                    // never conflicting with a manually opened opencode TUI.
+                    HOME: process.env.CWAC_OPENCODE_HOME || process.env.HOME || '/root',
+                },
                 stdio: ['pipe', 'pipe', 'pipe'],
                 shell: process.platform === 'win32',
             });
