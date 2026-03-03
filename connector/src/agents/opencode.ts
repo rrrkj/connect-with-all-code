@@ -65,8 +65,21 @@ export class OpencodeRunner implements AgentRunner {
 
             logger.info({ taskId, workspace: resolvedWorkspace, promptLength: prompt.length }, 'Executing opencode task');
 
-            // opencode run <prompt> --format json for structured output
-            const args = ['run', prompt, '--format', 'json'];
+            // Check for optional session continuation prefix: [SESSION:ses_xxx]
+            // This is injected by the gateway to maintain conversation history.
+            let actualPrompt = prompt;
+            const sessionMatch = prompt.match(/^\[SESSION:([^\]]+)\]\s*/);
+            const sessionId = sessionMatch ? sessionMatch[1] : null;
+            if (sessionId) {
+                actualPrompt = prompt.slice(sessionMatch![0].length);
+            }
+
+            // Build args: opencode run <prompt> --format json [--session <id>]
+            const args: string[] = ['run', actualPrompt, '--format', 'json'];
+            if (sessionId) {
+                args.push('--session', sessionId);
+                logger.info({ taskId, sessionId }, 'Continuing opencode session');
+            }
 
             const output = await this.runCommand(
                 [this.command, ...args],
